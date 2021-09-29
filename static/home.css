@@ -1,0 +1,83 @@
+
+.subir {
+  animation-duration: 3s;
+  animation-name: slidein;
+  iterations: 1
+}
+
+.descer {
+  animation-duration: 3s;
+  animation-name: slideleft;
+  iterations: 1
+}
+
+.expandir {
+    animation-duration: 3s;
+    animation-name: expand;
+}
+
+.aparecer {
+    animation-duration: 1s;
+    animation-name: fadein;
+}
+
+.desaparecer {
+    animation-duration: 0.05s;
+    animation-name: fadeout;
+}
+
+@keyframes slidein {
+  from {
+    margin-top: 100%;
+    width: 300%
+  }
+
+  to {
+    margin-top: 0%;
+    width: 100%;
+  }
+}
+
+@keyframes slideleft {
+  from {
+    margin-top: 0%;
+  }
+
+  to {
+    margin-top: 25%;
+  }
+}
+
+@keyframes expand {
+  from {
+    transform: scale(0.0);
+  }
+
+  to {
+    transform: scale(1.0);
+  }
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 1;
+    transform: scale(1.0);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1.0);
+  }
+}

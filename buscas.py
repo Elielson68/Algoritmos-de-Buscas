@@ -40,14 +40,14 @@ class Buscas(object):
         return list_copy
 
     def busca_amplitude(self, log=False):
-        actual_node = self.initial_node
-        next_nodes = []
-        steps = [actual_node]
-        visiteds_locations = []
-        backtrack = {}
-        while actual_node != self.finish_node:
-            if actual_node not in visiteds_locations:
-                sons = self.node_sons[actual_node].keys()
+        actual_node = self.initial_node # 1
+        next_nodes = [] # 1
+        steps = [actual_node] # 1
+        visiteds_locations = [] # 1
+        backtrack = {} # 1
+        while actual_node != self.finish_node: # nk
+            if actual_node not in visiteds_locations: # nk
+                sons = self.node_sons[actual_node].keys() # 3nk
                 if log:
                     print("Estou em", actual_node, "e os nós: ", list(sons), "foram inseridos na fila")
                 for son in sons:

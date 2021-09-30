@@ -176,8 +176,11 @@ class Buscas(object):
                     for k in caminho:
                         if (filhotes[k] == {} or type(filhotes[k]) == int) and k != self.finish_node:
                             del filhotes[k]
-                        elif filhotes[k] == {} and k == self.finish_node:
-                            return caminho
+                        elif k == self.finish_node:
+                            if type(filhotes[k]) == dict:
+                                return caminho
+                            else:
+                                del filhotes[k]
                         else:
                             filhotes = filhotes[k]
                     caminho = []
@@ -201,9 +204,9 @@ class Buscas(object):
                 else:
                     color = 'b'
                     cores.append(color)
-                self.G.add_edge(n1, n2, color=color)
+                self.G.add_edge(n1, n2, color=color, weight=self.edges_coust[(n1, n2)])
             pular.append((n2, n1))
-        pos = nx.spring_layout(self.G)
+        pos = nx.kamada_kawai_layout(self.G)
         colors = [self.G[u][v]['color'] for u, v in self.G.edges]
         nx.draw(self.G, pos, edge_color=colors, width=1, with_labels=True)
         nx.draw_networkx_edge_labels(self.G, pos, edge_labels=self.edges_coust)

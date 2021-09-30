@@ -2,7 +2,6 @@ bidict==0.21.3
 click==8.0.1
 colorama==0.4.4
 cycler==0.10.0
-dataclasses==0.8
 decorator==4.4.2
 Flask==2.0.1
 Flask-SocketIO==4.3.1

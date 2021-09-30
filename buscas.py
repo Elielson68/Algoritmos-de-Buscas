@@ -150,7 +150,10 @@ class Buscas(object):
                         else:
                             ramos[son][s] += valor
             else:
+                if ramos[son] == {}:
+                    return True
                 self.inserir_novo_galho(menor_valor, valor, ramos[son], retirar_filho)
+        return True
 
     def backtrack(self, inicial, final, lista_checagem, lista_pais, acumulativa=[]):
         if inicial == final:

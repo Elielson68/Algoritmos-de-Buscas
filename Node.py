@@ -47,3 +47,129 @@ edges_labels = {
     ('U', 'P'): 10, ('U', 'Q'): 10, ('U', 'V'): 21,
     ('V', 'S'): 10, ('V', 'T'): 10, ('V', 'U'): 21,
 }
+import collections
+
+
+teste = [{"D": 20}, {"D": 31}, {"D": 14}, {"E": 5}, {"F": 8}, {"A": 1}]
+teste2 = sorted(teste, key=lambda node: node[list(node.keys())[0]])
+print(teste2)
+
+"""
+    SUPOSIÇÃO PARA CHEGAR AO NÓ 'M'
+"""
+
+borda = [
+    {"B": (10, "A")},
+    {"C": (11, "A")},
+    {"D": (13, "A")}
+ ]
+
+borda2 = [
+    {"C": (11, "A")},
+    {"D": (13, "A")},
+    {"E": (24, "AB")},
+    {"F": (24, "AB")},
+]
+
+borda3 = [
+    {"D": (13, "A")},
+    {"G": (21, "AC")},
+    {"H": (21, "AC")},
+    {"E": (24, "AB")},
+    {"F": (24, "AB")},
+]
+
+borda4 = [
+    {"G": (21, "AC")},
+    {"H": (21, "AC")},
+    {"I": (23, "AD")},
+    {"J": (23, "AD")},
+    {"E": (24, "AB")},
+    {"F": (24, "AB")},
+]
+
+borda5 = [
+    {"H": (21, "AC")},
+    {"I": (23, "AD")},
+    {"J": (23, "AD")},
+    {"E": (24, "AB")},
+    {"F": (24, "AB")},
+    {"F": (31, "ACG")},
+    {"M": (31, "ACG")},
+]
+
+borda6 = [
+    {"I": (23, "AD")},
+    {"J": (23, "AD")},
+    {"E": (24, "AB")},
+    {"F": (24, "AB")},
+    {"F": (31, "ACG")},
+    {"M": (31, "ACG")},
+    {"N": (31, "ACH")},
+]
+
+borda7 = [
+    {"J": (23, "AD")},
+    {"E": (24, "AB")},
+    {"F": (24, "AB")},
+    {"N": (33, "ADI")},
+    {"O": (33, "ADI")},
+    {"F": (31, "ACG")},
+    {"M": (31, "ACG")},
+    {"N": (31, "ACH")},
+]
+
+borda8 = [
+    {"J": (23, "AD")}, # aqui retira da lista e mata ele
+    {"E": (24, "AB")},
+    {"F": (24, "AB")},
+    {"N": (33, "ADI")},
+    {"O": (33, "ADI")},
+    {"F": (31, "ACG")},
+    {"M": (31, "ACG")},
+    {"N": (31, "ACH")},
+]
+
+borda9 = [
+    #{"J": (23, "AD")}, # aqui retira da lista e mata ele
+    {"F": (24, "AB")},
+    {"F": (31, "ACG")},
+    {"M": (31, "ACG")},
+    {"N": (31, "ACH")},
+    {"N": (33, "ADI")},
+    {"O": (33, "ADI")},
+    {"K": (35, "ABE")},
+    {"L": (38, "ABE")},
+]
+
+borda9 = [
+    #{"J": (23, "AD")}, # aqui retira da lista e mata ele
+    {"F": (31, "ACG")},
+    {"M": (31, "ACG")},
+    {"N": (31, "ACH")},
+    {"G": (34, "ABF")},
+    {"M": (38, "ABF")},
+    {"N": (33, "ADI")},
+    {"O": (33, "ADI")},
+    {"K": (35, "ABE")},
+    {"L": (38, "ABE")},
+]
+
+borda10 = [
+    #{"J": (23, "AD")}, # aqui retira da lista e mata ele
+    {"M": (31, "ACGM")},
+    {"N": (31, "ACH")},
+    {"N": (33, "ADI")},
+    {"O": (33, "ADI")},
+    {"G": (34, "ABF")},
+    {"K": (35, "ABE")},
+    {"M": (38, "ABF")},
+    {"L": (38, "ABE")},
+    {"B": (45, "ACGF")},
+    {"M": (45, "ACGF")},
+]
+"""
+    TERMINA AQUI E O CAMINHO RETORNADO É ACGM COM CUSTO DE 31
+"""
+teste2 = sorted(borda6, key=lambda node: node[list(node.keys())[0][0]])
+print(teste2)

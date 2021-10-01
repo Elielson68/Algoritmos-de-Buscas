@@ -7,7 +7,7 @@ app = Flask(__name__)
 socketio = SocketIO(cors_allowed_origins="*")
 socketio.init_app(app)
 busca = Buscas()
-busca_app = {"largura": busca.busca_amplitude, "profunda": busca.busca_profundidade, "dijkstra": busca.busca_dijkstra}
+busca_app = {"largura": busca.busca_amplitude, "profunda": busca.busca_profundidade, "dijkstra": busca.nova_busca_dijkstra}
 
 @app.route("/")
 def home():

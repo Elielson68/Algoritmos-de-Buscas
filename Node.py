@@ -1,10 +1,14 @@
+from buscas import Buscas
+
+busca = Buscas()
+
 nodes = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V']
 edges = [
     ('A', 'B'), ('A', 'C'), ('A', 'D'),
-    ('B', 'E'), ('B', 'F'),
-    ('C', 'G'), ('C', 'H'),
-    ('D', 'I'), ('D', 'J'),
-    ('E', 'K'), ('E', 'L'),
+    ('B', 'A'), ('B', 'E'), ('B', 'F'),
+    ('C', 'A'), ('C', 'G'), ('C', 'H'),
+    ('D', 'A'), ('D', 'I'), ('D', 'J'),
+    ('E', 'B'), ('E', 'K'), ('E', 'L'),
     ('F', 'B'), ('F', 'G'), ('F', 'L'), ('F', 'M'),
     ('G', 'C'), ('G', 'F'), ('G', 'M'),
     ('H', 'C'), ('H', 'N'),
@@ -19,16 +23,16 @@ edges = [
     ('Q', 'L'), ('Q', 'U'),
     ('R', 'L'), ('R', 'M'), ('R', 'S'),
     ('S', 'M'), ('S', 'R'), ('S', 'V'),
-    ('T', 'N'), ('T', 'V'),
+    ('T', 'N'), ('T', 'O'), ('T', 'V'),
     ('U', 'P'), ('U', 'Q'), ('U', 'V'),
     ('V', 'S'), ('V', 'T'), ('V', 'U'),
 ]
 edges_labels = {
     ('A', 'B'): 10, ('A', 'C'): 11, ('A', 'D'): 13,
-    ('B', 'E'): 14, ('B', 'F'): 14,
-    ('C', 'G'): 10, ('C', 'H'): 10,
-    ('D', 'I'): 10, ('D', 'J'): 10,
-    ('E', 'K'): 11, ('E', 'L'): 14,
+    ('B', 'A'): 10,('B', 'E'): 14, ('B', 'F'): 14,
+    ('C', 'A'): 11, ('C', 'G'): 10, ('C', 'H'): 10,
+    ('D', 'A'): 13, ('D', 'I'): 10, ('D', 'J'): 10,
+    ('E', 'B'): 14, ('E', 'K'): 11, ('E', 'L'): 14,
     ('F', 'B'): 14, ('F', 'G'): 10, ('F', 'L'): 12, ('F', 'M'): 14,
     ('G', 'C'): 10, ('G', 'F'): 10, ('G', 'M'): 10,
     ('H', 'C'): 10, ('H', 'N'): 10,
@@ -43,7 +47,7 @@ edges_labels = {
     ('Q', 'L'): 10, ('Q', 'U'): 10,
     ('R', 'L'): 11, ('R', 'M'): 14, ('R', 'S'): 10,
     ('S', 'M'): 10, ('S', 'R'): 10, ('S', 'V'): 10,
-    ('T', 'N'): 12, ('T', 'V'): 10,
+    ('T', 'N'): 12, ('T', 'O'): 13, ('T', 'V'): 10,
     ('U', 'P'): 10, ('U', 'Q'): 10, ('U', 'V'): 21,
     ('V', 'S'): 10, ('V', 'T'): 10, ('V', 'U'): 21,
 }
@@ -52,11 +56,11 @@ import collections
 
 teste = [{"D": 20}, {"D": 31}, {"D": 14}, {"E": 5}, {"F": 8}, {"A": 1}]
 teste2 = sorted(teste, key=lambda node: node[list(node.keys())[0]])
-print(teste2)
 
 """
     SUPOSIÇÃO PARA CHEGAR AO NÓ 'M'
 """
+
 
 borda = [
     {"B": (10, "A")},
@@ -172,4 +176,9 @@ borda10 = [
     TERMINA AQUI E O CAMINHO RETORNADO É ACGM COM CUSTO DE 31
 """
 teste2 = sorted(borda6, key=lambda node: node[list(node.keys())[0][0]])
-print(teste2)
+busca.initial_node = "O"
+busca.finish_node = "A"
+busca.nodes = nodes
+busca.edges = edges
+busca.edges_coust = edges_labels
+print(busca.nova_busca_dijkstra())

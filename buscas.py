@@ -5,6 +5,7 @@ import os
 
 matplotlib.use('Agg')
 
+
 class Buscas(object):
 
     def __init__(self):
@@ -40,14 +41,15 @@ class Buscas(object):
         return list_copy
 
     def busca_amplitude(self, log=False):
-        actual_node = self.initial_node # 1
-        next_nodes = [] # 1
-        steps = [actual_node] # 1
-        visiteds_locations = [] # 1
-        backtrack = {} # 1
-        while actual_node != self.finish_node: # nk
-            if actual_node not in visiteds_locations: # nk
-                sons = self.node_sons[actual_node].keys() # 3nk
+        self.generate_node_sons()
+        actual_node = self.initial_node  # 1
+        next_nodes = []  # 1
+        steps = [actual_node]  # 1
+        visiteds_locations = []  # 1
+        backtrack = {}  # 1
+        while actual_node != self.finish_node:  # nk
+            if actual_node not in visiteds_locations:  # nk
+                sons = self.node_sons[actual_node].keys()  # 3nk
                 if log:
                     print("Estou em", actual_node, "e os nós: ", list(sons), "foram inseridos na fila")
                 for son in sons:
@@ -68,7 +70,7 @@ class Buscas(object):
                     actual_node = next_nodes.pop(0)
                 if log:
                     print("Estou em ", last_node, "e irei para", actual_node, "pois já fui visitado")
-                steps.append("Pulado "+actual_node)
+                steps.append("Pulado " + actual_node)
         if log:
             print("Cheguei em ", actual_node, "e assim termino minha busca. Viva a DEUS VULT")
 
@@ -77,6 +79,7 @@ class Buscas(object):
         return list(reversed(backtrack))
 
     def busca_profundidade(self, log=False):
+        self.generate_node_sons()
         actual_node = self.initial_node
         next_nodes = []
         steps = [actual_node]
@@ -106,11 +109,46 @@ class Buscas(object):
                     actual_node = next_nodes.pop()
                 if log:
                     print("Estou em ", last_node, "e irei para", actual_node, "pois já fui visitado")
-                steps.append("Pulado "+actual_node)
+                steps.append("Pulado " + actual_node)
         if log:
             print("Cheguei em ", actual_node, "e assim termino minha busca. Viva a DEUS VULT")
-        backtrack = self.backtrack(self.finish_node, self.initial_node, visiteds_locations, backtrack, [self.finish_node])
+        backtrack = self.backtrack(self.finish_node, self.initial_node, visiteds_locations, backtrack,
+                                   [self.finish_node])
         return list(reversed(backtrack))
+
+    def generate_next_node(self, node, first_time, jump_node):
+        node_name = self.initial_node if first_time else list(node.keys())[0]
+        sons_node = self.node_sons[node_name]
+        if first_time:
+            insert_sons_formated = [{n: (sons_node[n], self.initial_node)} for n in sons_node]
+        else:
+            if node_name not in jump_node:
+                node_value = node[node_name][0]
+                path = node[node_name][1]
+                insert_sons_formated = [{n: (sons_node[n] + node_value, path + " " + node_name)} for n in sons_node if n not in jump_node]
+            else:
+                insert_sons_formated = []
+        return insert_sons_formated
+
+    def nova_busca_dijkstra(self):
+        self.generate_node_sons()
+        next_node = self.initial_node
+        dict_node = {}
+        borda = []
+        visiteds = [self.initial_node]
+        while next_node != self.finish_node:
+            first_time = len(borda) == 0
+            node = self.initial_node if first_time else borda.pop(0)
+            insert_sons_formated = self.generate_next_node(node, first_time, visiteds)
+            borda += insert_sons_formated
+            borda = sorted(borda, key=lambda node_aux: node_aux[list(node_aux.keys())[0][0]])
+            if not first_time:
+                dict_node = node
+                next_node = list(node.keys())[0]
+                visiteds.append(next_node)
+        path = (dict_node[self.finish_node][1]+" "+self.finish_node).split()
+        cost = dict_node[self.finish_node][0]
+        return path, cost
 
     def busca_dijkstra(self, initial='*', final='#', percorrer={}, caminho=[]):
         if initial == final:
@@ -213,9 +251,9 @@ class Buscas(object):
         colors = [self.G[u][v]['color'] for u, v in self.G.edges]
         nx.draw(self.G, pos, edge_color=colors, width=1, with_labels=True)
         nx.draw_networkx_edge_labels(self.G, pos, edge_labels=self.edges_coust)
-        if os.path.exists("static/files/"+nome):
-            os.remove("static/files/"+nome)
-        plt.savefig("static/files/"+nome)
+        if os.path.exists("static/files/" + nome):
+            os.remove("static/files/" + nome)
+        plt.savefig("static/files/" + nome)
         plt.close()
         self.reset_values()
 

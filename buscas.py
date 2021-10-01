@@ -148,7 +148,7 @@ class Buscas(object):
                 visiteds.append(next_node)
         path = (dict_node[self.finish_node][1]+" "+self.finish_node).split()
         cost = dict_node[self.finish_node][0]
-        return path, cost
+        return path
 
     def busca_dijkstra(self, initial='*', final='#', percorrer={}, caminho=[]):
         if initial == final:

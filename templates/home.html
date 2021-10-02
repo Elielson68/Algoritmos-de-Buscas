@@ -7,52 +7,61 @@
     <link href="static/home.css" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-light bg-light">
-      <div class="container-fluid">
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
         <span class="navbar-brand mb-0 h1">Buscas</span>
-      </div>
-    </nav>
-    <div class="container px-4">
-      <div class="row gx-5">
-        <div class="col">
-         <div class="p-3 border bg-light subir" align="center" id="container-select">
-             <form action="/iniciar_busca" enctype="application/x-www-form-urlencoded" method="POST">
-                <select class="form-select form-select-lg mb-3" name="busca" id="busca">
-                    <option>Tipo de busca...</option>
-                    <option value="largura">Busca em Largura</option>
-                    <option value="profunda">Busca em Profundidade</option>
-                    <option value="dijkstra">Busca Dijkstra</option>
-                </select>
-                <select class="form-select form-select-lg mb-3" name="init_node" id="init_node">
-                    <option>Nó inicial...</option>
-                    {% for x in nos %}
-                    <option value="{{x}}">{{x}}</option>
-                    {% endfor %}
-                </select>
-                <select class="form-select form-select-lg mb-3" name="finish_node" id="finish_node">
-                    <option>Nó final...</option>
-                    {% for x in nos %}
-                    <option value="{{x}}">{{x}}</option>
-                    {% endfor %}
-                </select>
-
-            </form>
-             <button type="button" class="btn btn-success" id="enviar">Success</button>
-         </div>
-        </div>
-        <div class="col" id="column-image" hidden>
-          <div class="p-3 border bg-light">
-              <div id="container-image">
-                <img src="" id="img" class="rounded mx-auto d-block"/>
-              </div>
-          </div>
-        </div>
-      </div>
     </div>
+</nav>
+<div class="container px-4">
+    <div class="row gx-5">
+        <div class="col">
+            <div class="p-3 border bg-light subir" align="center" id="container-select">
+                <form action="/iniciar_busca" enctype="application/x-www-form-urlencoded" method="POST">
+                    <select class="form-select form-select-lg mb-3" name="busca" id="busca">
+                        <option>Tipo de busca...</option>
+                        <option value="largura">Busca em Largura</option>
+                        <option value="profunda">Busca em Profundidade</option>
+                        <option value="gulosa">Busca Gulosa</option>
+                        <option value="dijkstra">Busca Dijkstra</option>
+                        <option value="estrela">Busca A*</option>
+                    </select>
+                    <select class="form-select form-select-lg mb-3" name="init_node" id="init_node">
+                        <option>Nó inicial...</option>
+                        {% for x in nos %}
+                        <option value="{{x}}">{{x}}</option>
+                        {% endfor %}
+                    </select>
+                    <select class="form-select form-select-lg mb-3" name="finish_node" id="finish_node">
+                        <option>Nó final...</option>
+                        {% for x in nos %}
+                        <option value="{{x}}">{{x}}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="input-group mb-3">
+                      <div class="input-group-text">
+                        <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input" name="use_digraph" id="use_digraph">
+                      </div>
+                      <input disabled type="text" class="form-control" aria-label="Text input with checkbox" value="Utilizar dígrafo?" />
+                    </div>
+                </form>
+                <button type="button" class="btn btn-success" id="enviar">Gerar gráfico</button>
+            </div>
+        </div>
+        <div class="col" id="column-image" hidden style="margin-top: 3%;">
+            <div class="card p-3 border bg-light" style="width: 36rem;" id="container-image">
+                <div class="card-body">
+                <h5 class="card-text" id="custo" align="center">Custo: Valor aqui</h5>
+              </div>
+              <img id="img" src="" class="card-img-top">
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
-    <script src="static/home.js"></script>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+<script src="static/home.js"></script>
 </body>
 </html>

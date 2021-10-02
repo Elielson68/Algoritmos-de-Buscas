@@ -1,17 +1,16 @@
 from flask import Flask, render_template, request, send_file
 from buscas import Buscas
-from Node import nodes, edges, edges_labels
+from Node import nodes, edges_labels
 from flask_socketio import SocketIO
 import random
 app = Flask(__name__)
 socketio = SocketIO(cors_allowed_origins="*")
 socketio.init_app(app)
 busca = Buscas()
-busca_app = {"largura": busca.busca_amplitude, "profunda": busca.busca_profundidade, "dijkstra": busca.nova_busca_dijkstra}
 
 @app.route("/")
 def home():
-    return render_template("home.html", nos=nodes)
+    return render_template("home.html", nos=list(nodes.keys()))
 
 @app.route("/imagem")
 def imagem():
@@ -23,16 +22,14 @@ def gerarGrafo(input):
     tipo_busca = input["busca"]
     busca.initial_node = input["init_node"]
     busca.finish_node = input["finish_node"]
-    busca.generate_node_sons()
-    resultado = busca_app[tipo_busca]()
+    resultado = busca[tipo_busca]()
     name = generate_random_names()
     busca.gerar_grafico(resultado, name)
     socketio.emit("dado_gerado", name)
 
 def configure_busca():
     busca.nodes = nodes
-    busca.edges = edges
-    busca.edges_coust = edges_labels
+    busca.edges_cost = edges_labels
 
 def generate_random_names():
     name = ""

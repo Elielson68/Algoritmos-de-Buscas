@@ -33,6 +33,8 @@ edges_labels = {
 # busca.edges_cost = edges_labels
 # busca.initial_node = "A"
 # busca.finish_node = "V"
-# print(busca.busca_largura())
-# print(busca.busca_profundidade())
-# print(busca.busca_dijkstra())
+# print("Busca em largura: ", busca.busca_largura())
+# print("Busca em profundidade: ", busca.busca_profundidade())
+# print("Busca gulosa: ", busca.busca_gulosa())
+# print("Busca de Dijkstra: ", busca.busca_dijkstra())
+# print("Busca A*: ", busca.busca_a_estrela())

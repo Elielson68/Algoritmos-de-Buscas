@@ -17,7 +17,8 @@ class Buscas(object):
         self.G = nx.Graph()
 
     def __getitem__(self, item):
-        return {"largura": self.busca_largura, "profunda": self.busca_profundidade, "dijkstra": self.busca_dijkstra}[item]
+        return {"largura": self.busca_largura, "profunda": self.busca_profundidade, "dijkstra": self.busca_dijkstra}[
+            item]
 
     def reset_values(self):
         self.G = nx.Graph()
@@ -40,32 +41,16 @@ class Buscas(object):
         if node_name not in jump_node:
             node_value = node[node_name][0]
             path = node[node_name][1]
-            insert_sons_formated = [{key: (node_childrens[key] + node_value, path + " " + node_name)}
-                                    for key in node_childrens
-                                    if key not in jump_node
-                                   ]
+            insert_sons_formated = [
+                {key: (
+                    node_childrens[key] + node_value,
+                    path + " " + node_name)}
+                for key in node_childrens
+                if key not in jump_node
+            ]
         else:
             insert_sons_formated = []
         return insert_sons_formated
-
-    def busca_dijkstra(self):
-        self.generate_node_sons()
-        next_node = self.initial_node
-        dict_node = {}
-        borda = [{n: (self.node_sons[next_node][n], self.initial_node)} for n in self.node_sons[next_node]]
-        borda = sorted(borda, key=lambda node_aux: node_aux[list(node_aux.keys())[0][0]])
-        visiteds = [self.initial_node]
-        while next_node != self.finish_node:
-            node = borda.pop(0)
-            insert_sons_formated = self.generate_next_node(node, visiteds)
-            borda += insert_sons_formated
-            borda = sorted(borda, key=lambda node_aux: node_aux[list(node_aux.keys())[0][0]])
-            dict_node = node
-            next_node = list(node.keys())[0]
-            visiteds.append(next_node)
-        path = (dict_node[self.finish_node][1]+" "+self.finish_node).split()
-        cost = dict_node[self.finish_node][0]
-        return path
 
     def busca_largura(self):
         self.generate_node_sons()
@@ -80,9 +65,9 @@ class Buscas(object):
             dict_node = node
             next_node = list(node.keys())[0]
             visiteds.append(next_node)
-        path = (dict_node[self.finish_node][1]+" "+self.finish_node).split()
+        path = (dict_node[self.finish_node][1] + " " + self.finish_node).split()
         cost = dict_node[self.finish_node][0]
-        return path
+        return path, cost
 
     def busca_profundidade(self):
         self.generate_node_sons()
@@ -97,9 +82,68 @@ class Buscas(object):
             dict_node = node
             next_node = list(node.keys())[0]
             visiteds.append(next_node)
-        path = (dict_node[self.finish_node][1]+" "+self.finish_node).split()
+        path = (dict_node[self.finish_node][1] + " " + self.finish_node).split()
         cost = dict_node[self.finish_node][0]
-        return path
+        return path, cost
+
+    def busca_dijkstra(self):
+        self.generate_node_sons()
+        next_node = self.initial_node
+        dict_node = {}
+        borda = [{n: (self.node_sons[next_node][n], self.initial_node)} for n in self.node_sons[next_node]]
+        borda = sorted(borda, key=self.sort_dijkstra)
+        visiteds = [self.initial_node]
+        while next_node != self.finish_node:
+            node = borda.pop(0)
+            insert_sons_formated = self.generate_next_node(node, visiteds)
+            borda += insert_sons_formated
+            borda = sorted(borda, key=self.sort_dijkstra)
+            dict_node = node
+            next_node = list(node.keys())[0]
+            visiteds.append(next_node)
+        path = (dict_node[self.finish_node][1] + " " + self.finish_node).split()
+        cost = dict_node[self.finish_node][0]
+        return path, cost
+
+    def busca_a_estrela(self):
+        self.generate_node_sons()
+        next_node = self.initial_node
+        dict_node = {}
+        borda = [{n: (self.node_sons[next_node][n], self.initial_node)} for n in
+                 self.node_sons[next_node]]
+        borda = sorted(borda, key=self.sort_a_estrela)
+        visiteds = [self.initial_node]
+        while next_node != self.finish_node:
+            node = borda.pop(0)
+            insert_sons_formated = self.generate_next_node(node, visiteds)
+            borda += insert_sons_formated
+            borda = sorted(borda, key=self.sort_a_estrela)
+            dict_node = node
+            next_node = list(node.keys())[0]
+            visiteds.append(next_node)
+        path = (dict_node[self.finish_node][1] + " " + self.finish_node).split()
+        cost = dict_node[self.finish_node][0]
+        return path, cost
+
+    def busca_gulosa(self):
+        self.generate_node_sons()
+        next_node = self.initial_node
+        dict_node = {}
+        borda = [{n: (self.node_sons[next_node][n], self.initial_node)} for n in
+                 self.node_sons[next_node]]
+        borda = sorted(borda, key=self.sort_gulosa)
+        visiteds = [self.initial_node]
+        while next_node != self.finish_node:
+            node = borda.pop(0)
+            insert_sons_formated = self.generate_next_node(node, visiteds)
+            borda += insert_sons_formated
+            borda = sorted(borda, key=self.sort_gulosa)
+            dict_node = node
+            next_node = list(node.keys())[0]
+            visiteds.append(next_node)
+        path = (dict_node[self.finish_node][1] + " " + self.finish_node).split()
+        cost = dict_node[self.finish_node][0]
+        return path, cost
 
     def gerar_grafico(self, caminho, nome):
 
@@ -149,3 +193,15 @@ class Buscas(object):
         plt.savefig("static/files/" + nome)
         plt.close()
         self.reset_values()
+
+    def sort_dijkstra(self, node_aux):
+        key = list(node_aux.keys())[0]
+        return node_aux[key][0]
+
+    def sort_a_estrela(self, node_aux):
+        key = list(node_aux.keys())[0]
+        return node_aux[key][0] + self.nodes[key]
+
+    def sort_gulosa(self, node_aux):
+        key = list(node_aux.keys())[0]
+        return self.nodes[key]

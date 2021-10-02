@@ -24,8 +24,8 @@ def gerarGrafo(input):
     busca.finish_node = input["finish_node"]
     resultado = busca[tipo_busca]()
     name = generate_random_names()
-    busca.gerar_grafico(resultado, name)
-    socketio.emit("dado_gerado", name)
+    busca.gerar_grafico(resultado[0], name, input['use_digraph'])
+    socketio.emit("dado_gerado", {"nome": name, "custo": resultado[1]})
 
 def configure_busca():
     busca.nodes = nodes

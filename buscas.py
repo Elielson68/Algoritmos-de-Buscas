@@ -207,8 +207,8 @@ class Buscas(object):
         nx.draw_networkx_edge_labels(graph, pos, edge_labels=self.edges_cost)
 
         # verifica se o arquivo já existe com o mesmo nome e se existir exclui e então salva o novo.
-        if os.path.exists("static/files/" + nome):
-            os.remove("static/files/" + nome)
+        if not os.path.isdir("static/files"):
+            os.mkdir("static/files")
         plt.savefig("static/files/" + nome)
         plt.close()
         self.reset_values()

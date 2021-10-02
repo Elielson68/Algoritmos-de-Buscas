@@ -14,14 +14,17 @@ class Buscas(object):
         self.nodes = {}
         self.edges_cost = {}
         self.node_sons = {}
-        self.G = nx.Graph()
 
     def __getitem__(self, item):
-        return {"largura": self.busca_largura, "profunda": self.busca_profundidade, "dijkstra": self.busca_dijkstra}[
+        return {"largura": self.busca_largura,
+                "profunda": self.busca_profundidade,
+                "dijkstra": self.busca_dijkstra,
+                "gulosa": self.busca_gulosa,
+                "estrela": self.busca_a_estrela
+                }[
             item]
 
     def reset_values(self):
-        self.G = nx.Graph()
         self.initial_node = ''
         self.finish_node = ''
         self.nodes = {}
@@ -145,8 +148,11 @@ class Buscas(object):
         cost = dict_node[self.finish_node][0]
         return path, cost
 
-    def gerar_grafico(self, caminho, nome):
-
+    def gerar_grafico(self, caminho, nome, use_digraph):
+        if use_digraph:
+            graph = nx.DiGraph()
+        else:
+            graph = nx.Graph()
         # Inicia a lista com as duas primeiras edges
         nos_resultados = [(caminho[0], caminho[1])]
 
@@ -157,7 +163,7 @@ class Buscas(object):
 
         # Insere os nós no objeto
         for node in list(self.nodes.keys()):
-            self.G.add_node(node)
+            graph.add_node(node)
 
         # lista para pular os nós de mesmo par já inseridos na lista de Edges
         # Exemplo: (1, 2) ele irá pular o (2, 1)
@@ -172,20 +178,19 @@ class Buscas(object):
                     color = 'r'
                 else:
                     color = 'b'
-                self.G.add_edge(n1, n2, color=color, weight=self.edges_cost[(n1, n2)])
+                graph.add_edge(n1, n2, color=color, weight=self.edges_cost[(n1, n2)]/100)
             pular.append((n2, n1))
 
         # Cria o layout em que o grafo será plotado
-        pos = nx.kamada_kawai_layout(self.G)
+
+        pos = nx.kamada_kawai_layout(graph)
 
         # cria um array com as cores de cada edge
-        colors = [self.G[u][v]['color'] for u, v in self.G.edges]
-
+        colors = [graph[u][v]['color'] for u, v in graph.edges]
         # desenha o grafo com as configurações feitas acima
-        nx.draw(self.G, pos, edge_color=colors, width=1, with_labels=True)
-
+        nx.draw(graph, pos, edge_color=colors, width=1, with_labels=True)
         # realiza umas configurações adicionais nos edges
-        nx.draw_networkx_edge_labels(self.G, pos, edge_labels=self.edges_cost)
+        nx.draw_networkx_edge_labels(graph, pos, edge_labels=self.edges_cost)
 
         # verifica se o arquivo já existe com o mesmo nome e se existir exclui e então salva o novo.
         if os.path.exists("static/files/" + nome):

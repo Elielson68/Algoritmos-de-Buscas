@@ -18,11 +18,11 @@ class Buscas(object):
         self.__node_sons = {}
 
     def __getitem__(self, item):
-        return {"largura": self.busca_largura,
-                "profunda": self.busca_profundidade,
-                "dijkstra": self.busca_dijkstra,
-                "gulosa": self.busca_gulosa,
-                "estrela": self.busca_a_estrela
+        return {"largura": self.busca_largura(),
+                "profunda": self.busca_profundidade(),
+                "dijkstra": self.busca_dijkstra(),
+                "gulosa": self.busca_gulosa(),
+                "estrela": self.busca_a_estrela()
                 }[
             item]
 
